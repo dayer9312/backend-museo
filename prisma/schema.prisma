@@ -1,0 +1,164 @@
+
+
+// generator client {
+//   provider = "prisma-client"
+//   output   = "../generated/prisma"
+// }
+
+// datasource db {
+//   provider = "postgresql"
+// }
+
+// schema.prisma basado en el PDF "INGENIERÍA DEL PROYECTO"
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Rol {
+  ADMIN
+  CURADOR
+  EDITOR
+  VISITANTE
+}
+
+enum EstadoQR {
+  ACTIVO
+  EXPIRADO
+}
+
+enum TipoMedio {
+  IMAGEN
+  AUDIO
+  VIDEO
+}
+
+model Usuario {
+  id_usuario     Int          @id @default(autoincrement())
+  nombre         String
+  apellido       String
+  correo         String       @unique
+  contrasena     String
+  rol            Rol          @default(VISITANTE)
+  fecha_creacion DateTime     @default(now())
+  ultimo_ingreso DateTime?
+  logs           LogSistema[]
+
+  eliminado       Boolean   @default(false)
+  fecha_eliminado DateTime?
+  eliminado_por   Int?
+}
+
+model Sala {
+  id_sala        Int                 @id @default(autoincrement())
+  nombre         String
+  descripcion    String?             @db.Text
+  ubicacion      String?
+  orden          Int
+  imagen_portada String?
+  objetos        ObjetoMuseologico[]
+  mapas          MapaInterno[]
+
+  eliminado       Boolean   @default(false)
+  fecha_eliminado DateTime?
+  eliminado_por   Int?
+}
+
+model ObjetoMuseologico {
+  id_objeto           Int                @id @default(autoincrement())
+  id_sala             Int
+  sala                Sala               @relation(fields: [id_sala], references: [id_sala])
+  titulo              String
+  descripcion         String             @db.Text
+  anio                String?
+  autor               String?
+  categoria           String?
+  estado_conservacion String?
+  fecha_registro      DateTime           @default(now())
+  visible             Boolean            @default(true)
+  qr                  CodigoQR?
+  multimedia          Media[]
+  traducciones        Traduccion[]
+  estadisticas        EstadisticaVisita[]
+
+  eliminado       Boolean   @default(false)
+  fecha_eliminado DateTime?
+  eliminado_por   Int?
+}
+
+model CodigoQR {
+  id_qr          Int               @id @default(autoincrement())
+  id_objeto      Int               @unique
+  objeto         ObjetoMuseologico @relation(fields: [id_objeto], references: [id_objeto])
+  codigo         String            @unique
+  fecha_creacion DateTime          @default(now())
+  estado         EstadoQR          @default(ACTIVO)
+
+  eliminado       Boolean   @default(false)
+  fecha_eliminado DateTime?
+  eliminado_por   Int?
+}
+
+model Media {
+  id_medio    Int               @id @default(autoincrement())
+  id_objeto   Int
+  objeto      ObjetoMuseologico @relation(fields: [id_objeto], references: [id_objeto])
+  tipo        TipoMedio
+  url         String
+  descripcion String?           @db.Text
+  peso        String?
+  duracion    Int?
+
+  eliminado       Boolean   @default(false)
+  fecha_eliminado DateTime?
+  eliminado_por   Int?
+}
+
+model Traduccion {
+  id_traduccion         Int               @id @default(autoincrement())
+  id_objeto             Int
+  objeto                ObjetoMuseologico @relation(fields: [id_objeto], references: [id_objeto])
+  idioma                String
+  titulo_traducido      String
+  descripcion_traducida String            @db.Text
+
+  eliminado       Boolean   @default(false)
+  fecha_eliminado DateTime?
+  eliminado_por   Int?
+}
+
+model MapaInterno {
+  id_mapa                  Int    @id @default(autoincrement())
+  id_sala                  Int
+  sala                     Sala   @relation(fields: [id_sala], references: [id_sala])
+  imagen_mapa              String
+  coordenadas_interactivas Json?
+
+  eliminado       Boolean   @default(false)
+  fecha_eliminado DateTime?
+  eliminado_por   Int?
+}
+
+model LogSistema {
+  id_log         Int      @id @default(autoincrement())
+  id_usuario     Int
+  usuario        Usuario  @relation(fields: [id_usuario], references: [id_usuario])
+  accion         String
+  tabla_afectada String?
+  id_tabla       Int?
+  fecha_hora     DateTime @default(now())
+}
+
+model EstadisticaVisita {
+  id_visita            Int               @id @default(autoincrement())
+  id_objeto            Int
+  objeto               ObjetoMuseologico @relation(fields: [id_objeto], references: [id_objeto])
+  fecha_hora           DateTime          @default(now())
+  dispositivo          String?
+  version_app          String?
+  tiempo_visualizacion Int?
+}
