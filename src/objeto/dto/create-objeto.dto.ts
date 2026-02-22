@@ -17,4 +17,8 @@ export class CreateObjetoDto {
   @IsOptional()
   @IsString()
   autor?: string;
+
+  @IsString()
+  @IsOptional()
+  estado_conservacion?: string;
 }

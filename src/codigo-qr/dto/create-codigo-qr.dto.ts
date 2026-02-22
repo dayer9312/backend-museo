@@ -1,14 +1,17 @@
-import { IsString, IsInt, IsEnum, IsOptional } from 'class-validator';
-import { EstadoQR } from '@prisma/client';
+import { IsString, IsNotEmpty, IsInt, IsEnum } from 'class-validator';
+import { Type } from 'class-transformer';
 
 export class CreateCodigoQrDto {
+  @IsString()
+  @IsNotEmpty()
+  codigo: string;
+
+  @Type(() => Number) // <--- ESTO ES VITAL para que no explote el 500
   @IsInt()
+  @IsNotEmpty()
   id_objeto: number;
 
   @IsString()
-  codigo: string; // El texto único que leerá la cámara
-
-  @IsOptional()
-  @IsEnum(EstadoQR)
-  estado?: EstadoQR;
+  @IsNotEmpty()
+  estado: string; 
 }

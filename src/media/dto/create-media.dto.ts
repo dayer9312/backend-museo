@@ -1,25 +1,24 @@
-import { IsString, IsInt, IsOptional, IsEnum } from 'class-validator';
-import { TipoMedio } from '@prisma/client';
+import { IsString, IsNotEmpty, IsInt, IsOptional, IsEnum } from 'class-validator';
+import { Type } from 'class-transformer';
+import { TipoMedio } from '@prisma/client'; // <--- IMPORTAMOS EL TIPO EXACTO DE PRISMA
 
 export class CreateMediaDto {
-  @IsInt()
-  id_objeto: number;
+  
+  @IsOptional() 
+  @IsString()
+  url?: string;
 
+  // Le decimos que valide que sea parte del Enum, y lo tipamos como TipoMedio
   @IsEnum(TipoMedio)
-  tipo: TipoMedio;
+  @IsNotEmpty()
+  tipo: TipoMedio; 
 
   @IsString()
-  url: string; // Aquí guardaremos el link de la imagen o audio
-
   @IsOptional()
-  @IsString()
   descripcion?: string;
 
-  @IsOptional()
-  @IsString()
-  peso?: string;
-
-  @IsOptional()
+  @Type(() => Number) 
   @IsInt()
-  duracion?: number;
+  @IsNotEmpty()
+  id_objeto: number;
 }

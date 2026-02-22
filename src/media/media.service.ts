@@ -9,7 +9,7 @@ export class MediaService {
 
   create(createMediaDto: CreateMediaDto) {
     return this.prisma.media.create({
-      data: createMediaDto,
+      data: createMediaDto as any,
     });
   }
 
@@ -29,7 +29,7 @@ export class MediaService {
   update(id: number, updateMediaDto: UpdateMediaDto) {
     return this.prisma.media.update({
       where: { id_medio: id },
-      data: updateMediaDto,
+      data: updateMediaDto as any,
     });
   }
 
