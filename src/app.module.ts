@@ -15,6 +15,7 @@ import { MapaInternoModule } from './mapa-interno/mapa-interno.module';
 import { UsuarioModule } from './usuario/usuario.module';
 import { EstadisticaVisitaModule } from './estadistica-visita/estadistica-visita.module';
 import { LogSistemaModule } from './log-sistema/log-sistema.module';
+import { AuthModule } from './auth/auth.module';
 
 
 @Module({
@@ -24,7 +25,7 @@ import { LogSistemaModule } from './log-sistema/log-sistema.module';
       rootPath: join(process.cwd(), 'uploads'), // process.cwd() siempre apunta a la raíz del proyecto
       serveRoot: '/uploads', // Obliga a que la URL siempre tenga /uploads/...
     }),
-    SalaModule, ObjetoModule, MediaModule, CodigoQrModule, TraduccionModule, MapaInternoModule, UsuarioModule, EstadisticaVisitaModule, LogSistemaModule
+    SalaModule, ObjetoModule, MediaModule, CodigoQrModule, TraduccionModule, MapaInternoModule, UsuarioModule, EstadisticaVisitaModule, LogSistemaModule, AuthModule
   ],
   controllers: [AppController],
   providers: [AppService], 

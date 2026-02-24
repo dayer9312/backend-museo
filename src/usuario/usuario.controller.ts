@@ -1,7 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, UnauthorizedException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, UnauthorizedException, UseGuards } from '@nestjs/common';
 import { UsuarioService } from './usuario.service';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+
+import { Roles } from '../auth/decorators/roles.decorator';
+import { RolesGuard } from '../auth/guards/roles.guard';
 
 @Controller('usuario')
 export class UsuarioController {
@@ -50,7 +54,10 @@ export class UsuarioController {
     return this.usuarioService.update(id, updateUsuarioDto);
   }
 
+
   @Delete(':id')
+  @Roles('ADMIN') // Exigimos rol de administrador
+  @UseGuards(JwtAuthGuard, RolesGuard) // PRIMERO pide el Token (Jwt), LUEGO verifica el Rol
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.usuarioService.remove(id);
   }
