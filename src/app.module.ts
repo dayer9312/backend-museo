@@ -20,10 +20,10 @@ import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
-    PrismaModule, 
+    // 1. Añadimos esto para servir la carpeta de imágenes
     ServeStaticModule.forRoot({
-      rootPath: join(process.cwd(), 'uploads'), // process.cwd() siempre apunta a la raíz del proyecto
-      serveRoot: '/uploads', // Obliga a que la URL siempre tenga /uploads/...
+      rootPath: join(process.cwd(), 'uploads'), 
+      serveRoot: '/uploads',
     }),
     SalaModule, ObjetoModule, MediaModule, CodigoQrModule, TraduccionModule, MapaInternoModule, UsuarioModule, EstadisticaVisitaModule, LogSistemaModule, AuthModule
   ],

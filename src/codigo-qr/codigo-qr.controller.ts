@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, NotFoundException } from '@nestjs/common';
 import { CodigoQrService } from './codigo-qr.service';
 import { CreateCodigoQrDto } from './dto/create-codigo-qr.dto';
 import { UpdateCodigoQrDto } from './dto/update-codigo-qr.dto';
@@ -26,6 +26,12 @@ export class CodigoQrController {
   @Get('escanear/:codigo')
   escanear(@Param('codigo') codigo: string) {
     return this.codigoQrService.findByCodigo(codigo);
+  }
+
+  // Agrega esto dentro de tu clase CodigoQrController
+  @Get('buscar/:codigo')
+  buscarPorCodigo(@Param('codigo') codigo: string) {
+    return this.codigoQrService.buscarPorCodigoString(codigo);
   }
 
   @Patch(':id')

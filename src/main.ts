@@ -27,6 +27,8 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document); // 'api' es la ruta en el navegador
 
-  await app.listen(3000);
+  await app.listen(3001, '0.0.0.0');
+  console.log(`🚀 Backend corriendo en: http://localhost:3001`);
+  console.log(`Application is running on: ${await app.getUrl()}`);
 }
 bootstrap();

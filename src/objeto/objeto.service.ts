@@ -11,6 +11,7 @@ export class ObjetoService {
     return this.prisma.objetoMuseologico.create({
       data: createObjetoDto,
     });
+    
   }
 
   findAll() {
