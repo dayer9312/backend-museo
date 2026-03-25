@@ -17,20 +17,33 @@ export class ObjetoService {
   findAll() {
     return this.prisma.objetoMuseologico.findMany({
       where: { eliminado: false },
-      include: { sala: true }, // <--- ¡Truco! Trae también los datos de la sala
+      include: { 
+        multimedia: true,
+        sala: true,
+        traducciones: true,
+       },
     });
   }
 
   findOne(id: number) {
     return this.prisma.objetoMuseologico.findUnique({
       where: { id_objeto: id },
-      include: { sala: true, multimedia: true },
+      include: { 
+        multimedia: true,
+        sala: true,
+        traducciones: true,
+      },
     });
   }
 
   update(id: number, updateObjetoDto: UpdateObjetoDto) {
     return this.prisma.objetoMuseologico.update({
       where: { id_objeto: id },
+      include: { 
+        multimedia: true,
+        sala: true,
+        traducciones: true,
+      },
       data: updateObjetoDto,
     });
   }

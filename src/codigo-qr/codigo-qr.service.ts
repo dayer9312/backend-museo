@@ -19,6 +19,7 @@ export class CodigoQrService {
           include: {
             multimedia: true, // Traemos las fotos y audios
             sala: true,       // Traemos el nombre de la sala
+            traducciones: true, // Traemos las traducciones para mostrar en la ficha técnica
           }
         }
       }
